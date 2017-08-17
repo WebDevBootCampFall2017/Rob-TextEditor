@@ -12,19 +12,19 @@ using System.Windows.Forms;
 namespace TextEditorCSharp
 {
     public partial class Form1 : Form
-    {
+    {        
         string[] fileAsArray; string myfile;
 
         public Form1()
         {
             InitializeComponent();
+            wordWrapToolStripMenuItem.Checked = true;
         }
 
         private void Form1_ResizeEnd(object sender, EventArgs e)
-        {
-            //tb.Size = Form1.ActiveForm.Size;
-            tb.Width = Form1.ActiveForm.Width - 19;
-            tb.Height = Form1.ActiveForm.Height - 30;
+        {            
+            tb.Width = Form1.ActiveForm.Width - 16;
+            tb.Height = Form1.ActiveForm.Height - menuStrip1.Height - 42;
         }
 
         private void tb_TextChanged(object sender, EventArgs e)
@@ -65,9 +65,9 @@ namespace TextEditorCSharp
                 File.WriteAllText(myfile, tb.Text);
                 MessageBox.Show("File Written to: " + myfile);
             }
-            catch(Exception)
+            catch(Exception error)
             {
-                MessageBox.Show("Can't save to unknown file path, try 'Open' or 'Save as'");
+                MessageBox.Show("[Can't save to unknown file path, try 'Save As']\n" + error);
             }
         }
 
@@ -87,6 +87,44 @@ namespace TextEditorCSharp
                 {
                     MessageBox.Show(error.Message);
                 }
+            }
+        }
+
+        private void findToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void andReplaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void wordWrapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(wordWrapToolStripMenuItem.Checked == true)
+            {
+                wordWrapToolStripMenuItem.Checked = false;
+                tb.WordWrap = false;
+                tb.ScrollBars = ScrollBars.Vertical;
+            }
+            else
+            {
+                wordWrapToolStripMenuItem.Checked = true;
+                tb.WordWrap = true;
+                tb.ScrollBars = ScrollBars.Both;
+            }
+        }
+
+        private void wordWrapToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            if (wordWrapToolStripMenuItem.Checked == true)
+            {                
+                tb.ScrollBars = ScrollBars.Vertical;
+            }
+            else
+            {
+                tb.ScrollBars = ScrollBars.Both;
             }
         }
     }
