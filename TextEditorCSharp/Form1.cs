@@ -13,7 +13,7 @@ namespace TextEditorCSharp
 {
     public partial class Form1 : Form
     {
-        string[] fileAsArray;
+        string[] fileAsArray; string myfile;
 
         public Form1()
         {
@@ -44,15 +44,31 @@ namespace TextEditorCSharp
             openfile.Filter = "Text (*.txt)|*.txt";
             if (System.Windows.Forms.DialogResult.OK == openfile.ShowDialog())
             {
-                string myfile = openfile.FileName;
-                tb.Text = File.ReadAllText(myfile);
-                fileAsArray = File.ReadAllLines(myfile);
+                try
+                {
+                    myfile = openfile.FileName;
+                    tb.Text = File.ReadAllText(myfile);
+                    fileAsArray = File.ReadAllLines(myfile);
+                    MessageBox.Show("File Opened From: " + myfile);
+                }
+                catch(Exception error)
+                {
+                    MessageBox.Show(error.Message);
+                }
             }
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            try
+            {
+                File.WriteAllText(myfile, tb.Text);
+                MessageBox.Show("File Written to: " + myfile);
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("Can't save to unknown file path, try 'Open' or 'Save as'");
+            }
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -61,8 +77,16 @@ namespace TextEditorCSharp
             savefile.Filter = "Text (*.txt)|*.txt";
             if (System.Windows.Forms.DialogResult.OK == savefile.ShowDialog())
             {
-                string writefile = savefile.FileName;
-                File.WriteAllText(writefile, tb.Text);
+                try
+                {
+                    myfile = savefile.FileName;
+                    File.WriteAllText(myfile, tb.Text);
+                    MessageBox.Show("File Written to: " + myfile);
+                }
+                catch (Exception error)
+                {
+                    MessageBox.Show(error.Message);
+                }
             }
         }
     }
