@@ -15,14 +15,26 @@ namespace TextEditorCSharp
     {        
         //make a string array in case we want to use the file data as an array (unused)
         //make a string for the file path, to be utilized in any function
-        string[] fileAsArray; string filePath;
+        string[] fileAsArray; string filePath; string chosenColor;
+
+        private void SetChosenColor(string cc)
+        {
+            try
+            {
+                tb.ForeColor = Color.FromName(cc);
+            }
+            catch(Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+        }
 
         public static class Prompt
         {
             public static string ShowDialog(string text, string caption)
             {
                 Form prompt = new Form()
-                {
+                {                    
                     Width = 500,
                     Height = 150,
                     FormBorderStyle = FormBorderStyle.FixedDialog,
@@ -47,28 +59,13 @@ namespace TextEditorCSharp
             //Initialize form and set word wrap, and black font color, as checked by default
             InitializeComponent();
             wordWrapToolStripMenuItem.Checked = true;
-            blackToolStripMenuItem.Checked = true;
+            //Form1.ActiveForm.Text = "Let's Get Textual! Text Editor";
         }
-
-        private void Form1_ResizeEnd(object sender, EventArgs e)
-        {            
-            //whenever you resize a form set the text box to match the width, and the height to
-            //match the height of the form minus the height of the menustrip
-            tb.Width = Form1.ActiveForm.Width - 16;
-            tb.Height = Form1.ActiveForm.Height - menuStrip1.Height - 42;
-        }
-
+        
         private void tb_TextChanged(object sender, EventArgs e)
         {
 
-        }
-
-        private void Form1_SizeChanged(object sender, EventArgs e)
-        {
-            //Unused code to be removed
-            //tb.Width = Form1.ActiveForm.Width - 19;
-            //tb.Height = Form1.ActiveForm.Height - 30;
-        }
+        }        
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -151,10 +148,14 @@ namespace TextEditorCSharp
 
         private void andReplaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //Instantiate two new prompt classes to grab find and replace values
             string replaceWhat = Prompt.ShowDialog("Replace what?", "Find & Replace");
             string withWhat = Prompt.ShowDialog("With what?", "Find & Replace");
+            //Grab the current text as a string and make a new string replacing
+            //every instance of the first user given value with the second
             string grabText = tb.Text;
             string newText = grabText.Replace(replaceWhat, withWhat);
+            //Change the text to its new value
             tb.Text = newText;
         }
 
@@ -188,6 +189,35 @@ namespace TextEditorCSharp
             {
                 tb.ScrollBars = ScrollBars.Both;
             }*/
+        }
+
+        private void descriptionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Let's Get Textual! is a unique and fun text editor for editing and saving your text files on the fly!\n" +
+                "Original Author: Robert Tripp Ross IV\n" +
+                "Version Number: 0.2\n" +
+                "Course Name: Web Development And Coding Bootcamp");
+        }
+
+        private void colorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                chosenColor = Prompt.ShowDialog("Pick a color:", "Change Font Color");
+                SetChosenColor(chosenColor);
+            }
+            catch(Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            //whenever you resize a form set the text box to match the width, and the height to
+            //match the height of the form minus the height of the menustrip
+            tb.Width = Form1.ActiveForm.Width - 16;
+            tb.Height = Form1.ActiveForm.Height - menuStrip1.Height - 42;
         }
     }
 }
