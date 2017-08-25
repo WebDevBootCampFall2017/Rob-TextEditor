@@ -15,24 +15,14 @@ namespace TextEditorCSharp
     {        
         //make a string array in case we want to use the file data as an array (unused)
         //make a string for the file path, to be utilized in any function
-        string[] fileAsArray; string filePath; string chosenColor;
-
-        private void SetChosenColor(string cc)
-        {
-            try
-            {
-                tb.ForeColor = Color.FromName(cc);
-            }
-            catch(Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-        }
+        string[] fileAsArray; string filePath; string chosenColor; int fontSize;       
 
         public static class Prompt
         {
+            //method show dialog where you can customize values of text and caption to be displayed
             public static string ShowDialog(string text, string caption)
             {
+                //Constructor for a new form where we are showing everything
                 Form prompt = new Form()
                 {                    
                     Width = 500,
@@ -49,7 +39,7 @@ namespace TextEditorCSharp
                 prompt.Controls.Add(confirmation);
                 prompt.Controls.Add(textLabel);
                 prompt.AcceptButton = confirmation;
-
+                //Shortcut if-then statement to check if user pressed ok
                 return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
             }
         }
@@ -59,7 +49,6 @@ namespace TextEditorCSharp
             //Initialize form and set word wrap, and black font color, as checked by default
             InitializeComponent();
             wordWrapToolStripMenuItem.Checked = true;
-            //Form1.ActiveForm.Text = "Let's Get Textual! Text Editor";
         }
         
         private void tb_TextChanged(object sender, EventArgs e)
@@ -82,11 +71,12 @@ namespace TextEditorCSharp
                     filePath = openfile.FileName;
                     //read all text from file path as a single string
                     //and write it to the text box
-                    tb.Text = File.ReadAllText(filePath);
+                    rtb.Text = File.ReadAllText(filePath);
                     //save the file data as an array (unused)
                     fileAsArray = File.ReadAllLines(filePath);
                     //show where we opened the file from
                     MessageBox.Show("File Opened From: " + filePath);
+                    //Show file name on title bar
                     Form1.ActiveForm.Text = filePath;
                 }
                 //if anything goes wrong, catch the error, prevent a crash
@@ -103,7 +93,7 @@ namespace TextEditorCSharp
             try
             {
                 //write text in text box to previously chosen file path
-                File.WriteAllText(filePath, tb.Text);
+                File.WriteAllText(filePath, rtb.Text);
                 //tell user where we wrote the file
                 MessageBox.Show("File Written to: " + filePath);
             }
@@ -127,7 +117,7 @@ namespace TextEditorCSharp
                 try
                 {
                     filePath = savefile.FileName;
-                    File.WriteAllText(filePath, tb.Text);
+                    File.WriteAllText(filePath, rtb.Text);
                     MessageBox.Show("File Written to: " + filePath);
                     Form1.ActiveForm.Text = filePath;
                 }
@@ -142,7 +132,7 @@ namespace TextEditorCSharp
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string findWhat = Prompt.ShowDialog("Find what?", "Find");
-            int findIndex = tb.Text.IndexOf(findWhat);
+            int findIndex = rtb.Text.IndexOf(findWhat);
             MessageBox.Show("word found at index " + findIndex);
         }
 
@@ -153,10 +143,10 @@ namespace TextEditorCSharp
             string withWhat = Prompt.ShowDialog("With what?", "Find & Replace");
             //Grab the current text as a string and make a new string replacing
             //every instance of the first user given value with the second
-            string grabText = tb.Text;
+            string grabText = rtb.Text;
             string newText = grabText.Replace(replaceWhat, withWhat);
             //Change the text to its new value
-            tb.Text = newText;
+            rtb.Text = newText;
         }
 
         private void wordWrapToolStripMenuItem_Click(object sender, EventArgs e)
@@ -166,58 +156,67 @@ namespace TextEditorCSharp
             {
                 //uncheck if previously checked and set word wrap off
                 wordWrapToolStripMenuItem.Checked = false;
-                tb.WordWrap = false;
-                tb.ScrollBars = ScrollBars.Both;
+                rtb.WordWrap = false;
             }
             else
             {
                 //check if previously unchecked and set word wrap on
                 wordWrapToolStripMenuItem.Checked = true;
-                tb.WordWrap = true;
-                tb.ScrollBars = ScrollBars.Vertical;
+                rtb.WordWrap = true;
             }
         }      
-
-
-        private void wordWrapToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
-        {
-            /*if (wordWrapToolStripMenuItem.Checked == true)
-            {                
-                tb.ScrollBars = ScrollBars.Vertical;
-            }
-            else
-            {
-                tb.ScrollBars = ScrollBars.Both;
-            }*/
-        }
 
         private void descriptionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Let's Get Textual! is a unique and fun text editor for editing and saving your text files on the fly!\n" +
                 "Original Author: Robert Tripp Ross IV\n" +
-                "Version Number: 0.2\n" +
+                "V0.2\n" +
                 "Course Name: Web Development And Coding Bootcamp");
         }
 
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                chosenColor = Prompt.ShowDialog("Pick a color:", "Change Font Color");
-                SetChosenColor(chosenColor);
-            }
-            catch(Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
+            chosenColor = Prompt.ShowDialog("Pick a color:", "Change Font Color");
+            rtb.ForeColor = Color.FromName(chosenColor);
         }
 
         private void Form1_Resize(object sender, EventArgs e)
         {
             //whenever you resize a form set the text box to match the width, and the height to
             //match the height of the form minus the height of the menustrip
-            tb.Width = Form1.ActiveForm.Width - 16;
-            tb.Height = Form1.ActiveForm.Height - menuStrip1.Height - 42;
+            rtb.Width = Form1.ActiveForm.Width - 16;
+            rtb.Height = Form1.ActiveForm.Height - menuStrip1.Height - 42;
+        }
+
+        private void windowThemeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void sizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                fontSize = Convert.ToInt32(Prompt.ShowDialog("Enter a size:", "Font Size Selection"));
+                //rtb.Font = new Font(rtb.Font, fontSize, );
+            }
+            
+            catch(Exception error) { MessageBox.Show(error.Message); }     
+        }
+
+        private void boldToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rtb.Font = new Font(rtb.Font, FontStyle.Bold);            
+        }
+
+        private void underlineToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rtb.Font = new Font(rtb.Font, FontStyle.Underline);
+        }
+
+        private void italicToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rtb.Font = new Font(rtb.Font, FontStyle.Italic);
         }
     }
 }
