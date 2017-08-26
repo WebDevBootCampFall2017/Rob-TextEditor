@@ -15,7 +15,7 @@ namespace TextEditorCSharp
     {        
         //make a string array in case we want to use the file data as an array (unused)
         //make a string for the file path, to be utilized in any function
-        string[] fileAsArray; string filePath; string chosenColor; int fontSize;       
+        string[] fileAsArray; string filePath; string chosenColor; float fontSize; string appName = "Let's Get Textual! Text Editor";   
 
         public static class Prompt
         {
@@ -77,7 +77,8 @@ namespace TextEditorCSharp
                     //show where we opened the file from
                     MessageBox.Show("File Opened From: " + filePath);
                     //Show file name on title bar
-                    Form1.ActiveForm.Text = filePath;
+                    //Also keep application name on title bar
+                    Form1.ActiveForm.Text = String.Format("({0}) {1}", filePath, appName);
                 }
                 //if anything goes wrong, catch the error, prevent a crash
                 catch(Exception error)
@@ -119,7 +120,7 @@ namespace TextEditorCSharp
                     filePath = savefile.FileName;
                     File.WriteAllText(filePath, rtb.Text);
                     MessageBox.Show("File Written to: " + filePath);
-                    Form1.ActiveForm.Text = filePath;
+                    Form1.ActiveForm.Text = String.Format("({0}) {1}", filePath, appName);
                 }
                 //throw error message for every exception
                 catch (Exception error)
@@ -138,15 +139,26 @@ namespace TextEditorCSharp
 
         private void andReplaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //Instantiate two new prompt classes to grab find and replace values
-            string replaceWhat = Prompt.ShowDialog("Replace what?", "Find & Replace");
-            string withWhat = Prompt.ShowDialog("With what?", "Find & Replace");
-            //Grab the current text as a string and make a new string replacing
-            //every instance of the first user given value with the second
-            string grabText = rtb.Text;
-            string newText = grabText.Replace(replaceWhat, withWhat);
-            //Change the text to its new value
-            rtb.Text = newText;
+            try
+            {
+                //Instantiate two new prompt classes to grab find and replace values
+                string replaceWhat = Prompt.ShowDialog("Replace what?", "Find & Replace");
+                string withWhat = Prompt.ShowDialog("With what?", "Find & Replace");
+                //Grab the current text as a string and make a new string replacing
+                //every instance of the first user given value with the second
+                string grabText = rtb.Text;
+                string newText = grabText.Replace(replaceWhat, withWhat);
+                //Change the text to its new value
+                rtb.Text = newText;
+            }
+            catch(ArgumentException error)
+            {
+                MessageBox.Show("You failed to provide text to replace!\n" + error.Message);
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
         }
 
         private void wordWrapToolStripMenuItem_Click(object sender, EventArgs e)
@@ -168,7 +180,7 @@ namespace TextEditorCSharp
 
         private void descriptionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Let's Get Textual! is a unique and fun text editor for editing and saving your text files on the fly!\n" +
+            MessageBox.Show(appName + " is a unique and fun text editor for editing and saving your text files on the fly!\n" +
                 "Original Author: Robert Tripp Ross IV\n" +
                 "V0.2\n" +
                 "Course Name: Web Development And Coding Bootcamp");
@@ -197,11 +209,14 @@ namespace TextEditorCSharp
         {
             try
             {
-                fontSize = Convert.ToInt32(Prompt.ShowDialog("Enter a size:", "Font Size Selection"));
-                //rtb.Font = new Font(rtb.Font, fontSize, );
-            }
-            
-            catch(Exception error) { MessageBox.Show(error.Message); }     
+                string fontSizeString = Prompt.ShowDialog("Enter a size:", "Font Size Selection");
+                fontSize = float.Parse(fontSizeString);
+                rtb.Font = new Font(rtb.Font.FontFamily, fontSize);
+            }            
+            catch(Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }     
         }
 
         private void boldToolStripMenuItem_Click(object sender, EventArgs e)
