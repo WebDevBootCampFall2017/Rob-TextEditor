@@ -24,7 +24,8 @@ namespace TextEditorCSharp
             {
                 //Constructor for a new form where we are showing everything
                 Form prompt = new Form()
-                {                    
+                {
+                    //Alternate form of class attribute assignment
                     Width = 500,
                     Height = 150,
                     FormBorderStyle = FormBorderStyle.FixedDialog,
@@ -42,6 +43,29 @@ namespace TextEditorCSharp
                 //Shortcut if-then statement to check if user pressed ok
                 return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
             }
+
+            /*public static string ShowList(string text, string caption)
+            {
+                //Constructor for a new form where we are showing everything
+                Form prompt = new Form()
+                {
+                    Width = 500,
+                    Height = 150,
+                    FormBorderStyle = FormBorderStyle.FixedDialog,
+                    Text = caption,
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+                Label textLabel = new Label() { Left = 50, Top = 20, Text = text };
+                ListBox listBox = new ListBox() { Left = 50, Top = 50, Width = 400 };
+                Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
+                confirmation.Click += (sender, e) => { prompt.Close(); };
+                prompt.Controls.Add(listBox);
+                prompt.Controls.Add(confirmation);
+                prompt.Controls.Add(textLabel);
+                prompt.AcceptButton = confirmation;
+                //Shortcut if-then statement to check if user pressed ok
+                return prompt.ShowDialog() == DialogResult.OK ? listBox.Text : "";
+            }*/
         }
 
         public Form1()
@@ -211,7 +235,7 @@ namespace TextEditorCSharp
             {
                 string fontSizeString = Prompt.ShowDialog("Enter a size:", "Font Size Selection");
                 fontSize = float.Parse(fontSizeString);
-                rtb.Font = new Font(rtb.Font.FontFamily, fontSize);
+                rtb.Font = new Font(rtb.Font.FontFamily, fontSize, rtb.Font.Style);
             }            
             catch(Exception error)
             {
@@ -221,7 +245,7 @@ namespace TextEditorCSharp
 
         private void boldToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            rtb.Font = new Font(rtb.Font, FontStyle.Bold);            
+            rtb.Font = new Font(rtb.Font, FontStyle.Bold);
         }
 
         private void underlineToolStripMenuItem_Click(object sender, EventArgs e)
