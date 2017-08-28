@@ -257,5 +257,20 @@ namespace TextEditorCSharp
         {
             rtb.Font = new Font(rtb.Font, FontStyle.Italic);
         }
+
+        private void listToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FontDialog fontDialog1 = new FontDialog();
+            fontDialog1.ShowColor = true;
+
+            fontDialog1.Font = rtb.Font;
+            fontDialog1.Color = rtb.ForeColor;
+
+            if (fontDialog1.ShowDialog() != DialogResult.Cancel)
+            {
+                rtb.Font = fontDialog1.Font;
+                rtb.ForeColor = fontDialog1.Color;
+            }
+        }
     }
 }
