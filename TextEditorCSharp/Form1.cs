@@ -257,7 +257,7 @@ namespace TextEditorCSharp
         {
             MessageBox.Show(appName + " is a unique and fun text editor for editing and saving your text files on the fly!\n" +
                 "Original Author: Robert Tripp Ross IV\n" +
-                "V0.2\n" +
+                "V0.5\n" +
                 "Course Name: Web Development And Coding Bootcamp");
         }
 
@@ -329,6 +329,10 @@ namespace TextEditorCSharp
             toolStripMenuItem2.Checked = true;
             toolStripMenuItem3.Checked = false;
             toolStripMenuItem4.Checked = false;
+            menuStrip1.BackColor = SystemColors.Control;
+            menuStrip1.ForeColor = Color.Black;
+            rtb.ForeColor = Color.Black;
+            rtb.BackColor = Color.White;
         }
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
@@ -336,6 +340,10 @@ namespace TextEditorCSharp
             toolStripMenuItem3.Checked = true;
             toolStripMenuItem2.Checked = false;
             toolStripMenuItem4.Checked = false;
+            menuStrip1.BackColor = SystemColors.ControlDarkDark;
+            menuStrip1.ForeColor = Color.WhiteSmoke;
+            rtb.ForeColor = Color.WhiteSmoke;
+            rtb.BackColor = SystemColors.ControlDarkDark;
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
@@ -343,6 +351,10 @@ namespace TextEditorCSharp
             toolStripMenuItem4.Checked = true;
             toolStripMenuItem2.Checked = false;
             toolStripMenuItem3.Checked = false;
+            menuStrip1.BackColor = Color.Firebrick;
+            menuStrip1.ForeColor = Color.LightYellow;
+            rtb.ForeColor = Color.Yellow;
+            rtb.BackColor = Color.OrangeRed;
         }
 
         private void Form1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
