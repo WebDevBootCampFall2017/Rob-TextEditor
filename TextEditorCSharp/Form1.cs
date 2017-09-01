@@ -32,7 +32,7 @@ namespace TextEditorCSharp
                     Text = caption,
                     StartPosition = FormStartPosition.CenterScreen
                 };
-                Label textLabel = new Label() { Left = 50, Top = 20, Text = text };
+                Label textLabel = new Label() { Left = 50, Top = 20, Text = text, Width = 150 };
                 TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
                 Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
                 confirmation.Click += (sender, e) => { prompt.Close(); };
@@ -41,7 +41,7 @@ namespace TextEditorCSharp
                 prompt.Controls.Add(textLabel);
                 prompt.AcceptButton = confirmation;
                 //Shortcut if-then statement to check if user pressed ok
-                return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
+                return prompt.ShowDialog() == DialogResult.OK ? textBox.Text.Trim() : "";
             }
 
             /*public static string ShowList(string text, string caption)
@@ -73,8 +73,9 @@ namespace TextEditorCSharp
             //Initialize form and set word wrap, and black font color, as checked by default
             InitializeComponent();
             wordWrapToolStripMenuItem.Checked = true;
+            toolStripMenuItem2.Checked = true;
         }
-        
+
         private void tb_TextChanged(object sender, EventArgs e)
         {
 
@@ -115,19 +116,28 @@ namespace TextEditorCSharp
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
+            //Only attempt if we know the path of the file
+            if (filePath != null)
             {
-                //write text in text box to previously chosen file path
-                File.WriteAllText(filePath, rtb.Text);
-                //tell user where we wrote the file
-                MessageBox.Show("File Written to: " + filePath);
+                try
+                {
+                    //write text in text box to previously chosen file path
+                    File.WriteAllText(filePath, rtb.Text);
+                    //tell user where we wrote the file
+                    MessageBox.Show("File Written to: " + filePath);
+                }
+                //attempt to guess extremely specific error exception
+                //tell user exact error
+                catch (Exception error)
+                {
+                    MessageBox.Show(error.Message);
+                }
             }
-            //attempt to guess extremely specific error exception
-            //just in case, tell user exact error
-            //works both ways :)
-            catch(Exception error)
+            //Else make them do save as function
+            else
             {
-                MessageBox.Show("[Can't save to unknown file path, try 'Save As']\n" + error);
+                MessageBox.Show("Where should I save this file?");
+                saveAsToolStripMenuItem_Click(sender, e);
             }
         }
 
@@ -156,9 +166,21 @@ namespace TextEditorCSharp
 
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string findWhat = Prompt.ShowDialog("Find what?", "Find");
+            string findWhat = Prompt.ShowDialog("Insert a string of characters to find in the text", "Find");
             int findIndex = rtb.Text.IndexOf(findWhat);
-            MessageBox.Show("word found at index " + findIndex);
+            //Index of a word not found will be set to -1, check for it
+            if (findIndex != -1)
+            {
+                MessageBox.Show("Found at index " + findIndex);
+                //rtb.Focus();
+                rtb.Select(findIndex, 0);
+            }
+            else
+            {
+                MessageBox.Show("Not found in entire text file!\n" +
+                    "Remember the find function is 'case-sensitive'!\n" +
+                    "Try checking your capitalizations!");
+            }
         }
 
         private void andReplaceToolStripMenuItem_Click(object sender, EventArgs e)
@@ -166,14 +188,24 @@ namespace TextEditorCSharp
             try
             {
                 //Instantiate two new prompt classes to grab find and replace values
-                string replaceWhat = Prompt.ShowDialog("Replace what?", "Find & Replace");
-                string withWhat = Prompt.ShowDialog("With what?", "Find & Replace");
+                string replaceWhat = Prompt.ShowDialog("Replace what? (Case-Sensitive)", "Find & Replace");
+                string withWhat = Prompt.ShowDialog("With what? (Case-Sensitive)", "Find & Replace");
                 //Grab the current text as a string and make a new string replacing
                 //every instance of the first user given value with the second
                 string grabText = rtb.Text;
-                string newText = grabText.Replace(replaceWhat, withWhat);
-                //Change the text to its new value
-                rtb.Text = newText;
+                //Tell user if they are looking for something that doesn't exist
+                if (grabText.Contains(replaceWhat))
+                {
+                    string newText = grabText.Replace(replaceWhat, withWhat);
+                    //Change the text to its new value
+                    rtb.Text = newText;
+                }
+                else
+                {
+                    MessageBox.Show("Not found in entire text file!\n" +
+                    "Remember the find function is 'case-sensitive'!\n" +
+                    "Try checking your capitalizations!");
+                }
             }
             catch(ArgumentException error)
             {
@@ -184,6 +216,25 @@ namespace TextEditorCSharp
                 MessageBox.Show(error.Message);
             }
         }
+
+
+
+        /*protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                case (Keys.Control | Keys.S):
+                    saveToolStripMenuItem_Click(sender, e);
+                    break;
+            }
+            if (keyData == (Keys.Control | Keys.S))
+            {
+                MessageBox.Show("Do Something");
+
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }*/
 
         private void wordWrapToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -271,6 +322,35 @@ namespace TextEditorCSharp
                 rtb.Font = fontDialog1.Font;
                 rtb.ForeColor = fontDialog1.Color;
             }
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            toolStripMenuItem2.Checked = true;
+            toolStripMenuItem3.Checked = false;
+            toolStripMenuItem4.Checked = false;
+        }
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            toolStripMenuItem3.Checked = true;
+            toolStripMenuItem2.Checked = false;
+            toolStripMenuItem4.Checked = false;
+        }
+
+        private void toolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            toolStripMenuItem4.Checked = true;
+            toolStripMenuItem2.Checked = false;
+            toolStripMenuItem3.Checked = false;
+        }
+
+        private void Form1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {/*
+            if (e.Alt & e.KeyValue == (int)'F')
+            {
+                MessageBox.Show("HELLO");
+            }*/
         }
     }
 }
