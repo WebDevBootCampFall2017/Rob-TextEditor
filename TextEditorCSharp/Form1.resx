@@ -120,4 +120,27 @@
   <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEADw8AAAEAIADoAwAAFgAAACgAAAAPAAAAHgAAAAEAIAAAAAAAhAMAABILAAASCwAAAAAAAAAA
+        AAD/AP8A/wD/AP8A/wAAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA//8A
+        /wD/AP8A/wD/AAAAAP+r4///q+P///h4AP+r4///q+P//6vj//+r4///AAAA/wAAAP8AAAD/AAAA/wAA
+        AP//AP8AAAAA/6vj//+r4///+HgA//h4AP/4eAD/+HgA/6vj//+r4///q+P//wAAAP8AAAD//wD/AP8A
+        /wD/AP8AAAAA/6vj//+r4///q+P///h4AP+r4///q+P///h4AP+r4///q+P//6vj//8AAAD//wD/AP8A
+        /wAAAAD/q+P//6vj//+r4///q+P///h4AP/4eAD/+HgA/6vj//+r4///q+P//6vj//8AAAD//wD/AP8A
+        /wAAAAD/q+P//6vj//+r4///+HgA/6vj///4eAD/q+P//6vj//+r4///q+P//6vj//8AAAD//wD/AP8A
+        /wD/AP8AAAAA/6vj//+r4///q+P///h4AP/4eAD/+HgA//h4AP+r4///q+P//wAAAP//AP8A/wD/AP8A
+        /wD/AP8AAAAA/6vj//+r4///q+P//6vj///4eAD/q+P//6vj//+r4///AAAA//8A/wD/AP8A/wD/AP8A
+        /wD/AP8A/wD/AAAAAP+r4///q+P//6vj//+r4///q+P//wAAAP8AAAD//wD/AP8A/wD/AP8A/wD/AP8A
+        /wD/AP8A/wD/AP8A/wAAAAD/AAAA/6vj//+r4///AAAA//h4AP/4eAD/AAAA//8A/wD/AP8A/wD/AP8A
+        /wD/AP8A/wD/AP8A/wD/AP8A/wD/AAAAAP8AAAD/+HgA/wAAAP8AAAD/AAAA/wAAAP8AAAD//wD/AP8A
+        /wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAD/AAAA/6vj//+r4///q+P//6vj//+r4///AAAA//8A
+        /wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAD/q+P//6vj//+r4///q+P//6vj//8AAAD//wD/AP8A
+        /wD/AP8A/wD/AP8A/wD/AP8A/wD/AAAAAP+r4///q+P//6vj//8AAAD/AAAA/wAAAP//AP8A/wD/AP8A
+        /wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wAAAAD/AAAA/wAAAP//AP8A/wD/AP8A/wD/AP8A/wD/AP8A
+        /wDgAgAAwAAAAIAGAACABgAAAAYAAAAGAACADgAAgB4AAMA+AADgHgAA+AYAAPwCAAD8BgAA+A4AAPx+
+        AAA=
+</value>
+  </data>
 </root>

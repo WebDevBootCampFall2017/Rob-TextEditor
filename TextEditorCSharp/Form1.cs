@@ -32,7 +32,7 @@ namespace TextEditorCSharp
                     Text = caption,
                     StartPosition = FormStartPosition.CenterScreen
                 };
-                Label textLabel = new Label() { Left = 50, Top = 20, Text = text, Width = 150 };
+                Label textLabel = new Label() { Left = 50, Top = 20, Text = text, Width = 200 };
                 TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
                 Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
                 confirmation.Click += (sender, e) => { prompt.Close(); };
@@ -74,6 +74,12 @@ namespace TextEditorCSharp
             InitializeComponent();
             wordWrapToolStripMenuItem.Checked = true;
             toolStripMenuItem2.Checked = true;
+            //Shortcut Keys
+            openToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.O;
+            saveToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
+            saveAsToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S | Keys.Shift;
+            //findToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.F;
+            andReplaceToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.H;
         }
 
         private void tb_TextChanged(object sender, EventArgs e)
@@ -171,8 +177,8 @@ namespace TextEditorCSharp
             //Index of a word not found will be set to -1, check for it
             if (findIndex != -1)
             {
-                MessageBox.Show("Found at index " + findIndex);
-                //rtb.Focus();
+                //MessageBox.Show("Found at index " + findIndex);
+                rtb.Focus();
                 rtb.Select(findIndex, 0);
             }
             else
@@ -199,6 +205,7 @@ namespace TextEditorCSharp
                     string newText = grabText.Replace(replaceWhat, withWhat);
                     //Change the text to its new value
                     rtb.Text = newText;
+                    rtb.Focus();
                 }
                 else
                 {
@@ -259,6 +266,7 @@ namespace TextEditorCSharp
                 "Original Author: Robert Tripp Ross IV\n" +
                 "V0.5\n" +
                 "Course Name: Web Development And Coding Bootcamp");
+            rtb.Focus();
         }
 
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -331,8 +339,10 @@ namespace TextEditorCSharp
             toolStripMenuItem4.Checked = false;
             menuStrip1.BackColor = SystemColors.Control;
             menuStrip1.ForeColor = Color.Black;
+
             rtb.ForeColor = Color.Black;
             rtb.BackColor = Color.White;
+            Form1.ActiveForm.BackColor = menuStrip1.BackColor;
         }
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
@@ -342,8 +352,10 @@ namespace TextEditorCSharp
             toolStripMenuItem4.Checked = false;
             menuStrip1.BackColor = SystemColors.ControlDarkDark;
             menuStrip1.ForeColor = Color.WhiteSmoke;
+
             rtb.ForeColor = Color.WhiteSmoke;
             rtb.BackColor = SystemColors.ControlDarkDark;
+            Form1.ActiveForm.BackColor = menuStrip1.BackColor;
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
@@ -353,8 +365,10 @@ namespace TextEditorCSharp
             toolStripMenuItem3.Checked = false;
             menuStrip1.BackColor = Color.Firebrick;
             menuStrip1.ForeColor = Color.LightYellow;
+
             rtb.ForeColor = Color.Yellow;
             rtb.BackColor = Color.OrangeRed;
+            Form1.ActiveForm.BackColor = menuStrip1.BackColor;
         }
 
         private void Form1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
