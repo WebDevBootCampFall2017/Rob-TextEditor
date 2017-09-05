@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace TextEditorCSharp
 {
@@ -32,7 +33,7 @@ namespace TextEditorCSharp
                     Text = caption,
                     StartPosition = FormStartPosition.CenterScreen
                 };
-                Label textLabel = new Label() { Left = 50, Top = 20, Text = text, Width = 200 };
+                Label textLabel = new Label() { Left = 50, Top = 20, Text = text, Width = 350 };
                 TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
                 Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
                 confirmation.Click += (sender, e) => { prompt.Close(); };
@@ -79,7 +80,8 @@ namespace TextEditorCSharp
             saveToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
             saveAsToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S | Keys.Shift;
             //findToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.F;
-            andReplaceToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.H;
+            everyInstanceToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.H;
+            chooseInstanceToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.H;
         }
 
         private void tb_TextChanged(object sender, EventArgs e)
@@ -191,37 +193,7 @@ namespace TextEditorCSharp
 
         private void andReplaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                //Instantiate two new prompt classes to grab find and replace values
-                string replaceWhat = Prompt.ShowDialog("Replace what? (Case-Sensitive)", "Find & Replace");
-                string withWhat = Prompt.ShowDialog("With what? (Case-Sensitive)", "Find & Replace");
-                //Grab the current text as a string and make a new string replacing
-                //every instance of the first user given value with the second
-                string grabText = rtb.Text;
-                //Tell user if they are looking for something that doesn't exist
-                if (grabText.Contains(replaceWhat))
-                {
-                    string newText = grabText.Replace(replaceWhat, withWhat);
-                    //Change the text to its new value
-                    rtb.Text = newText;
-                    rtb.Focus();
-                }
-                else
-                {
-                    MessageBox.Show("Not found in entire text file!\n" +
-                    "Remember the find function is 'case-sensitive'!\n" +
-                    "Try checking your capitalizations!");
-                }
-            }
-            catch(ArgumentException error)
-            {
-                MessageBox.Show("You failed to provide text to replace!\n" + error.Message);
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
+            
         }
 
 
@@ -377,6 +349,78 @@ namespace TextEditorCSharp
             {
                 MessageBox.Show("HELLO");
             }*/
+        }
+
+        private void chooseInstanceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string replaceWhat = Prompt.ShowDialog("Replace what? (Case-Sensitive)", "Find & Replace");
+                string withWhat = Prompt.ShowDialog("With what? (Case-Sensitive)", "Find & Replace");
+                string grabText = rtb.Text;
+                int replaceIndex = rtb.Text.IndexOf(replaceWhat);
+                bool stillReplacing = true;
+                do
+                {
+                    grabText = rtb.Text;
+                    replaceIndex = rtb.Text.IndexOf(replaceWhat);
+                    if (replaceIndex != -1)
+                    {
+                        string confirmation = Prompt.ShowDialog("Would you like to replace " + replaceWhat + " at index " + replaceIndex + " with " + withWhat + "?", "Find & Replace");
+                        rtb.Select(replaceIndex, replaceWhat.Length);
+                        if (confirmation == "yes")
+                        {
+                            stillReplacing = true;
+                            //var aStringBuilder = new StringBuilder(rtb.Text);
+                            rtb.Text = rtb.Text.Remove(replaceIndex, replaceWhat.Length);
+                            rtb.Text = rtb.Text.Insert(replaceIndex, withWhat);
+                        }
+                        else if (confirmation == "no")
+                        {
+                            stillReplacing = false;
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("No instances of this string exist!");
+                        stillReplacing = false;
+                    }
+                }
+                while (stillReplacing == true);
+            }
+            catch (ArgumentException error)
+            {
+                MessageBox.Show("You failed to provide text to replace!\n" + error.Message);
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+        }
+
+        private void everyInstanceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Instantiate two new prompt classes to grab find and replace values
+            string replaceWhat = Prompt.ShowDialog("Replace what? (Case-Sensitive)", "Find & Replace");
+            string withWhat = Prompt.ShowDialog("With what? (Case-Sensitive)", "Find & Replace");
+            //Grab the current text as a string and make a new string replacing
+            //every instance of the first user given value with the second
+            string grabText = rtb.Text;
+            //Tell user if they are looking for something that doesn't exist
+            if (grabText.Contains(replaceWhat))
+            {
+                string newText = grabText.Replace(replaceWhat, withWhat);
+                //Change the text to its new value
+                rtb.Text = newText;
+                rtb.Focus();
+            }
+            else
+            {
+                MessageBox.Show("Not found in entire text file!\n" +
+                "Remember the find function is 'case-sensitive'!\n" +
+                "Try checking your capitalizations!");
+            }
         }
     }
 }

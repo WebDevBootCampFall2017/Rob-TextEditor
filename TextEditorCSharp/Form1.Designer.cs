@@ -54,6 +54,8 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.descriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rtb = new System.Windows.Forms.RichTextBox();
+            this.everyInstanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chooseInstanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -121,7 +123,8 @@
             this.styleToolStripMenuItem,
             this.colorToolStripMenuItem});
             this.fontToolStripMenuItem.Name = "fontToolStripMenuItem";
-            this.fontToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fontToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+Shift+F";
+            this.fontToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.fontToolStripMenuItem.Text = "Font";
             // 
             // listToolStripMenuItem
@@ -181,13 +184,18 @@
             this.findToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.andReplaceToolStripMenuItem});
             this.findToolStripMenuItem.Name = "findToolStripMenuItem";
-            this.findToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.findToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+F";
+            this.findToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.findToolStripMenuItem.Text = "Find";
             this.findToolStripMenuItem.Click += new System.EventHandler(this.findToolStripMenuItem_Click);
             // 
             // andReplaceToolStripMenuItem
             // 
+            this.andReplaceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.everyInstanceToolStripMenuItem,
+            this.chooseInstanceToolStripMenuItem});
             this.andReplaceToolStripMenuItem.Name = "andReplaceToolStripMenuItem";
+            this.andReplaceToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.andReplaceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.andReplaceToolStripMenuItem.Text = "And Replace";
             this.andReplaceToolStripMenuItem.Click += new System.EventHandler(this.andReplaceToolStripMenuItem_Click);
@@ -251,7 +259,7 @@
             // descriptionToolStripMenuItem
             // 
             this.descriptionToolStripMenuItem.Name = "descriptionToolStripMenuItem";
-            this.descriptionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.descriptionToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.descriptionToolStripMenuItem.Text = "Description";
             this.descriptionToolStripMenuItem.Click += new System.EventHandler(this.descriptionToolStripMenuItem_Click);
             // 
@@ -262,6 +270,22 @@
             this.rtb.Size = new System.Drawing.Size(490, 234);
             this.rtb.TabIndex = 2;
             this.rtb.Text = "";
+            // 
+            // everyInstanceToolStripMenuItem
+            // 
+            this.everyInstanceToolStripMenuItem.Name = "everyInstanceToolStripMenuItem";
+            this.everyInstanceToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+H";
+            this.everyInstanceToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.everyInstanceToolStripMenuItem.Text = "Every Instance";
+            this.everyInstanceToolStripMenuItem.Click += new System.EventHandler(this.everyInstanceToolStripMenuItem_Click);
+            // 
+            // chooseInstanceToolStripMenuItem
+            // 
+            this.chooseInstanceToolStripMenuItem.Name = "chooseInstanceToolStripMenuItem";
+            this.chooseInstanceToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+Shift+H";
+            this.chooseInstanceToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.chooseInstanceToolStripMenuItem.Text = "Choose Instance";
+            this.chooseInstanceToolStripMenuItem.Click += new System.EventHandler(this.chooseInstanceToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -310,6 +334,8 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem everyInstanceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem chooseInstanceToolStripMenuItem;
     }
 }
 
