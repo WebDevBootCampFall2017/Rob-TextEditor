@@ -45,6 +45,8 @@
             this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.andReplaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.everyInstanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chooseInstanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,8 +56,6 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.descriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rtb = new System.Windows.Forms.RichTextBox();
-            this.everyInstanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.chooseInstanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -198,7 +198,22 @@
             this.andReplaceToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.andReplaceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.andReplaceToolStripMenuItem.Text = "And Replace";
-            this.andReplaceToolStripMenuItem.Click += new System.EventHandler(this.andReplaceToolStripMenuItem_Click);
+            // 
+            // everyInstanceToolStripMenuItem
+            // 
+            this.everyInstanceToolStripMenuItem.Name = "everyInstanceToolStripMenuItem";
+            this.everyInstanceToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+H";
+            this.everyInstanceToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.everyInstanceToolStripMenuItem.Text = "Every Instance";
+            this.everyInstanceToolStripMenuItem.Click += new System.EventHandler(this.everyInstanceToolStripMenuItem_Click);
+            // 
+            // chooseInstanceToolStripMenuItem
+            // 
+            this.chooseInstanceToolStripMenuItem.Name = "chooseInstanceToolStripMenuItem";
+            this.chooseInstanceToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+Shift+H";
+            this.chooseInstanceToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.chooseInstanceToolStripMenuItem.Text = "Choose Instance";
+            this.chooseInstanceToolStripMenuItem.Click += new System.EventHandler(this.chooseInstanceToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -270,22 +285,6 @@
             this.rtb.Size = new System.Drawing.Size(490, 234);
             this.rtb.TabIndex = 2;
             this.rtb.Text = "";
-            // 
-            // everyInstanceToolStripMenuItem
-            // 
-            this.everyInstanceToolStripMenuItem.Name = "everyInstanceToolStripMenuItem";
-            this.everyInstanceToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+H";
-            this.everyInstanceToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.everyInstanceToolStripMenuItem.Text = "Every Instance";
-            this.everyInstanceToolStripMenuItem.Click += new System.EventHandler(this.everyInstanceToolStripMenuItem_Click);
-            // 
-            // chooseInstanceToolStripMenuItem
-            // 
-            this.chooseInstanceToolStripMenuItem.Name = "chooseInstanceToolStripMenuItem";
-            this.chooseInstanceToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+Shift+H";
-            this.chooseInstanceToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.chooseInstanceToolStripMenuItem.Text = "Choose Instance";
-            this.chooseInstanceToolStripMenuItem.Click += new System.EventHandler(this.chooseInstanceToolStripMenuItem_Click);
             // 
             // Form1
             // 
