@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace TextEditorCSharp
 {
@@ -43,6 +44,29 @@ namespace TextEditorCSharp
                 //Shortcut if-then statement to check if user pressed ok
                 return prompt.ShowDialog() == DialogResult.OK ? textBox.Text.Trim() : "";
             }
+
+            /*public static string ShowList(string text, string caption)
+            {
+                //Constructor for a new form where we are showing everything
+                Form prompt = new Form()
+                {
+                    Width = 500,
+                    Height = 150,
+                    FormBorderStyle = FormBorderStyle.FixedDialog,
+                    Text = caption,
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+                Label textLabel = new Label() { Left = 50, Top = 20, Text = text };
+                ListBox listBox = new ListBox() { Left = 50, Top = 50, Width = 400 };
+                Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
+                confirmation.Click += (sender, e) => { prompt.Close(); };
+                prompt.Controls.Add(listBox);
+                prompt.Controls.Add(confirmation);
+                prompt.Controls.Add(textLabel);
+                prompt.AcceptButton = confirmation;
+                //Shortcut if-then statement to check if user pressed ok
+                return prompt.ShowDialog() == DialogResult.OK ? listBox.Text : "";
+            }*/
         }
 
         public Form1()
@@ -334,36 +358,54 @@ namespace TextEditorCSharp
                 string replaceWhat = Prompt.ShowDialog("Replace what? (Case-Sensitive)", "Find & Replace");
                 string withWhat = Prompt.ShowDialog("With what? (Case-Sensitive)", "Find & Replace");
                 string grabText = rtb.Text;
-                int replaceIndex = rtb.Text.IndexOf(replaceWhat);
-                bool stillReplacing = true;
-                do
+                if (rtb.Text.Contains(replaceWhat))
                 {
-                    grabText = rtb.Text;
-                    replaceIndex = rtb.Text.IndexOf(replaceWhat);
-                    if (replaceIndex != -1)
+                    int replaceIndex = rtb.Text.IndexOf(replaceWhat);
+                    bool stillReplacing = true;
+                    do
                     {
-                        string confirmation = Prompt.ShowDialog("Would you like to replace " + replaceWhat + " at index " + replaceIndex + " with " + withWhat + "?", "Find & Replace");
-                        rtb.Select(replaceIndex, replaceWhat.Length);
-                        if (confirmation == "yes")
+                        grabText = rtb.Text;
+                        replaceIndex = rtb.Text.IndexOf(replaceWhat);
+                        if (replaceIndex != -1)
                         {
-                            stillReplacing = true;
-                            //var aStringBuilder = new StringBuilder(rtb.Text);
-                            rtb.Text = rtb.Text.Remove(replaceIndex, replaceWhat.Length);
-                            rtb.Text = rtb.Text.Insert(replaceIndex, withWhat);
+                            string confirmation = Prompt.ShowDialog("Would you like to replace " + replaceWhat + " at index " + replaceIndex + " with " + withWhat + "?", "Find & Replace");
+                            rtb.Select(replaceIndex, replaceWhat.Length);
+
+                            switch (confirmation.ToUpper())
+                            {
+                                case "YES":
+                                case "Y":
+                                case "OK":
+                                    stillReplacing = true;
+                                    //var aStringBuilder = new StringBuilder(rtb.Text);
+                                    rtb.Text = rtb.Text.Remove(replaceIndex, replaceWhat.Length);
+                                    rtb.Text = rtb.Text.Insert(replaceIndex, withWhat);
+                                    break;
+                                case "NO":
+                                case "N":
+                                    stillReplacing = false;
+                                    break;
+                                default:
+                                    MessageBox.Show("Unknown response!\n" +
+                                        "Try yes or no");
+                                    stillReplacing = true;
+                                    break;
+                            }
                         }
-                        else if (confirmation == "no")
+                        else
                         {
+                            MessageBox.Show("You have replaced every instance of that string!");
                             stillReplacing = false;
                         }
-
                     }
-                    else
-                    {
-                        MessageBox.Show("No instances of this string exist!");
-                        stillReplacing = false;
-                    }
+                    while (stillReplacing == true);
                 }
-                while (stillReplacing == true);
+                else
+                {
+                    MessageBox.Show("Could not find what you are looking for in the text!" +
+                "Remember the find function is 'case-sensitive'!\n" +
+                "Try checking your capitalizations!");            
+                }
             }
             catch (ArgumentException error)
             {
@@ -386,10 +428,7 @@ namespace TextEditorCSharp
             //Tell user if they are looking for something that doesn't exist
             if (grabText.Contains(replaceWhat))
             {
-                string newText = grabText.Replace(replaceWhat, withWhat);
-                //Change the text to its new value
-                rtb.Text = newText;
-                rtb.Focus();
+
             }
             else
             {
