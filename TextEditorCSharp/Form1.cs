@@ -33,7 +33,7 @@ namespace TextEditorCSharp
                     Text = caption,
                     StartPosition = FormStartPosition.CenterScreen
                 };
-                Label textLabel = new Label() { Left = 50, Top = 20, Text = text, Width = 350 };
+                Label textLabel = new Label() { Left = 50, Top = 20, Text = text, Width = 500 };
                 TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
                 Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
                 confirmation.Click += (sender, e) => { prompt.Close(); };
@@ -140,6 +140,7 @@ namespace TextEditorCSharp
                     File.WriteAllText(filePath, rtb.Text);
                     MessageBox.Show("File Written to: " + filePath);
                     Form1.ActiveForm.Text = String.Format("({0}) {1}", filePath, appName);
+                    rtb.Focus();
                 }
                 //throw error message for every exception
                 catch (Exception error)
@@ -221,7 +222,7 @@ namespace TextEditorCSharp
                         }
                         else
                         {
-                            MessageBox.Show("You have replaced every instance of that string!");
+                            MessageBox.Show("You have replaced every instance of '" + replaceWhat + "' in the textbox with '" + withWhat + "' !");
                             stillReplacing = false;
                         }
                     }
@@ -229,7 +230,7 @@ namespace TextEditorCSharp
                 }
                 else
                 {
-                    MessageBox.Show("Could not find what you are looking for in the text!" +
+                    MessageBox.Show("Could not find what you are looking for in the text!\n" +
                 "Remember the find function is 'case-sensitive'!\n" +
                 "Try checking your capitalizations!");
                 }
@@ -246,20 +247,18 @@ namespace TextEditorCSharp
 
         private void everyInstanceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //Instantiate two new prompt classes to grab find and replace values
-            string replaceWhat = Prompt.ShowDialog("Replace what? (Case-Sensitive)", "Find & Replace");
-            string withWhat = Prompt.ShowDialog("With what? (Case-Sensitive)", "Find & Replace");
-            //Grab the current text as a string and make a new string replacing
-            //every instance of the first user given value with the second
+            string replaceWhat = Prompt.ShowDialog("Replace what?", "Find & Replace");
+            string withWhat = Prompt.ShowDialog("With what?", "Find & Replace");
             string grabText = rtb.Text;
-            //Tell user if they are looking for something that doesn't exist
             if (grabText.Contains(replaceWhat))
             {
-
+                string newText = grabText.Replace(replaceWhat, withWhat);
+                rtb.Text = newText;
+                MessageBox.Show("You have replaced every instance of '" + replaceWhat + "' in the textbox with '" + withWhat + "' !");
             }
             else
             {
-                MessageBox.Show("Not found in entire text file!\n" +
+                MessageBox.Show("Could not find what you are looking for in the text!\n" +
                 "Remember the find function is 'case-sensitive'!\n" +
                 "Try checking your capitalizations!");
             }
