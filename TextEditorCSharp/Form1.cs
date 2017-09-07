@@ -16,7 +16,7 @@ namespace TextEditorCSharp
     {        
         //make a string array in case we want to use the file data as an array (unused)
         //make a string for the file path, to be utilized in any function
-        string[] fileAsArray; string filePath; string chosenColor; float fontSize; string appName = "Let's Get Textual! Text Editor";   
+        string[] fileAsArray; string filePath; string safeFilePath; string chosenColor; float fontSize; string appName = "Let's Get Textual! Text Editor";   
 
         public static class Prompt
         {
@@ -44,6 +44,58 @@ namespace TextEditorCSharp
                 //Shortcut if-then statement to check if user pressed ok
                 return prompt.ShowDialog() == DialogResult.OK ? textBox.Text.Trim() : "";
             }            
+        }
+
+        public void ChangeTheme(int themeNum)
+        {
+            switch (themeNum)
+            {
+                //Default theme
+                case 0:
+                    toolStripMenuItem2.Checked = true;
+                    toolStripMenuItem3.Checked = false;
+                    toolStripMenuItem4.Checked = false;
+                    menuStrip1.BackColor = SystemColors.Control;
+                    menuStrip1.ForeColor = Color.Black;
+
+                    rtb.ForeColor = Color.Black;
+                    rtb.BackColor = Color.White;
+                    Form1.ActiveForm.BackColor = menuStrip1.BackColor;
+                    break;
+                //Dark theme
+                case 1:
+                    toolStripMenuItem3.Checked = true;
+                    toolStripMenuItem2.Checked = false;
+                    toolStripMenuItem4.Checked = false;
+                    menuStrip1.BackColor = SystemColors.ControlDarkDark;
+                    menuStrip1.ForeColor = Color.WhiteSmoke;
+
+                    rtb.ForeColor = Color.WhiteSmoke;
+                    rtb.BackColor = SystemColors.ControlDarkDark;
+                    Form1.ActiveForm.BackColor = menuStrip1.BackColor;
+                    break;
+                //Fire theme
+                case 2:
+                    toolStripMenuItem4.Checked = true;
+                    toolStripMenuItem2.Checked = false;
+                    toolStripMenuItem3.Checked = false;
+                    menuStrip1.BackColor = Color.Firebrick;
+                    menuStrip1.ForeColor = Color.LightYellow;
+
+                    rtb.ForeColor = Color.Yellow;
+                    rtb.BackColor = Color.OrangeRed;
+                    Form1.ActiveForm.BackColor = menuStrip1.BackColor;
+                    break;                    
+            }
+
+            if (chosenColor != null)
+            {
+                string keepColor = Prompt.ShowDialog("Would you like to keep your custom font color?","Keep font color?").ToUpper();
+                if (keepColor == "YES")
+                {
+                    rtb.ForeColor = Color.FromName(chosenColor);
+                }
+            }
         }
 
         public Form1()
@@ -79,6 +131,7 @@ namespace TextEditorCSharp
                 {
                     //set file path as string equal to file name of the instantiated class
                     filePath = openfile.FileName;
+                    safeFilePath = openfile.SafeFileName;
                     //read all text from file path as a single string
                     //and write it to the text box
                     rtb.Text = File.ReadAllText(filePath);
@@ -88,7 +141,7 @@ namespace TextEditorCSharp
                     MessageBox.Show("File Opened From: " + filePath);
                     //Show file name on title bar
                     //Also keep application name on title bar
-                    Form1.ActiveForm.Text = String.Format("({0}) {1}", filePath, appName);
+                    Form1.ActiveForm.Text = String.Format("({0}) {1}", safeFilePath, appName);
                 }
                 //if anything goes wrong, catch the error, prevent a crash
                 catch(Exception error)
@@ -137,9 +190,10 @@ namespace TextEditorCSharp
                 try
                 {
                     filePath = savefile.FileName;
+                    safeFilePath = Path.GetFileName(filePath);
                     File.WriteAllText(filePath, rtb.Text);
                     MessageBox.Show("File Written to: " + filePath);
-                    Form1.ActiveForm.Text = String.Format("({0}) {1}", filePath, appName);
+                    Form1.ActiveForm.Text = String.Format("({0}) {1}", safeFilePath, appName);
                     rtb.Focus();
                 }
                 //throw error message for every exception
@@ -197,7 +251,7 @@ namespace TextEditorCSharp
                             rtb.Select(replaceIndex, replaceWhat.Length);
                             //Single second pause so we can show the user what they would be replacing
                             System.Threading.Thread.Sleep(1000);
-                            string confirmation = Prompt.ShowDialog("Would you like to replace '" + replaceWhat + "' at index " + replaceIndex + " with '" + withWhat + "'?", "Find & Replace");
+                            string confirmation = Prompt.ShowDialog("Would you like to replace '" + replaceWhat + "' at index " + replaceIndex + " with '" + withWhat + "' ?", "Find & Replace");
 
                             switch (confirmation.ToUpper())
                             {
@@ -350,46 +404,23 @@ namespace TextEditorCSharp
             {
                 rtb.Font = fontDialog1.Font;
                 rtb.ForeColor = fontDialog1.Color;
+                chosenColor = rtb.ForeColor.ToString();
             }
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            toolStripMenuItem2.Checked = true;
-            toolStripMenuItem3.Checked = false;
-            toolStripMenuItem4.Checked = false;
-            menuStrip1.BackColor = SystemColors.Control;
-            menuStrip1.ForeColor = Color.Black;
-
-            rtb.ForeColor = Color.Black;
-            rtb.BackColor = Color.White;
-            Form1.ActiveForm.BackColor = menuStrip1.BackColor;
+            ChangeTheme(0);
         }
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
-            toolStripMenuItem3.Checked = true;
-            toolStripMenuItem2.Checked = false;
-            toolStripMenuItem4.Checked = false;
-            menuStrip1.BackColor = SystemColors.ControlDarkDark;
-            menuStrip1.ForeColor = Color.WhiteSmoke;
-
-            rtb.ForeColor = Color.WhiteSmoke;
-            rtb.BackColor = SystemColors.ControlDarkDark;
-            Form1.ActiveForm.BackColor = menuStrip1.BackColor;
+            ChangeTheme(1);
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
         {
-            toolStripMenuItem4.Checked = true;
-            toolStripMenuItem2.Checked = false;
-            toolStripMenuItem3.Checked = false;
-            menuStrip1.BackColor = Color.Firebrick;
-            menuStrip1.ForeColor = Color.LightYellow;
-
-            rtb.ForeColor = Color.Yellow;
-            rtb.BackColor = Color.OrangeRed;
-            Form1.ActiveForm.BackColor = menuStrip1.BackColor;
+            ChangeTheme(2);
         }
 
         private void Form1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
