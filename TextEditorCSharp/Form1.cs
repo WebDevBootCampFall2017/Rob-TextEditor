@@ -87,13 +87,17 @@ namespace TextEditorCSharp
                     Form1.ActiveForm.BackColor = menuStrip1.BackColor;
                     break;                    
             }
-
+            //If custom font color...
             if (chosenColor != null)
-            {
+            {//Ask if the user wants to keep it
                 string keepColor = Prompt.ShowDialog("Would you like to keep your custom font color?","Keep font color?").ToUpper();
                 if (keepColor == "YES")
                 {
                     rtb.ForeColor = Color.FromName(chosenColor);
+                }
+                else
+                {//User doesn't want to keep custom font color, trash custom color reference
+                    chosenColor = null;
                 }
             }
         }
@@ -312,7 +316,7 @@ namespace TextEditorCSharp
             }
             else
             {
-                MessageBox.Show("Could not find what you are looking for in the text!\n" +
+                MessageBox.Show("Could not find what you were looking for in the text!\n" +
                 "Remember the find function is 'case-sensitive'!\n" +
                 "Try checking your capitalizations!");
             }
@@ -346,8 +350,18 @@ namespace TextEditorCSharp
 
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            chosenColor = Prompt.ShowDialog("Pick a color:", "Change Font Color");
-            rtb.ForeColor = Color.FromName(chosenColor);
+            //Ask for a font color
+            string askColor = Prompt.ShowDialog("Pick a color:", "Change Font Color");
+            //Only change font color if user provides a new one
+            if (askColor != rtb.ForeColor.ToString())
+            {
+                rtb.ForeColor = Color.FromName(askColor);
+                chosenColor = askColor;
+            }
+            else
+            {
+                MessageBox.Show("The color specified is already chosen");
+            }
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -403,8 +417,13 @@ namespace TextEditorCSharp
             if (fontDialog1.ShowDialog() != DialogResult.Cancel)
             {
                 rtb.Font = fontDialog1.Font;
+                //If not changing the color, don't set custom string
+                if (rtb.ForeColor != fontDialog1.Color)
+                {
+                    chosenColor = rtb.ForeColor.ToString();
+                }
+                //Change the color no matter what
                 rtb.ForeColor = fontDialog1.Color;
-                chosenColor = rtb.ForeColor.ToString();
             }
         }
 
