@@ -13,10 +13,21 @@ using System.Text.RegularExpressions;
 namespace TextEditorCSharp
 {
     public partial class Form1 : Form
-    {        
+    {
         //make a string array in case we want to use the file data as an array (unused)
         //make a string for the file path, to be utilized in any function
-        string[] fileAsArray; string filePath; string safeFilePath; string chosenColor; float fontSize; string appName = "Let's Get Textual! Text Editor";   
+        /*string[] fileAsArray;*/ string filePath; string safeFilePath; string chosenColor; float fontSize; string appName = "Let's Get Textual! Text Editor";
+        bool changed; bool saved;
+        /*List<FoundIndex> fi;
+
+        class FoundIndex
+        {
+            public string value;
+            public int index;
+            //public List<FoundIndex> fi;
+        }*/
+
+        
 
         public static class Prompt
         {
@@ -43,10 +54,36 @@ namespace TextEditorCSharp
                 prompt.AcceptButton = confirmation;
                 //Shortcut if-then statement to check if user pressed ok
                 return prompt.ShowDialog() == DialogResult.OK ? textBox.Text.Trim() : "";
-            }            
+            }
+
+            public static bool ShowOkCancel(string text, string caption, string okTxt, string noTxt)
+            {
+                //Constructor for a new form where we are showing everything
+                Form prompt = new Form()
+                {
+                    //Alternate form of class attribute assignment
+                    Width = 500,
+                    Height = 150,
+                    FormBorderStyle = FormBorderStyle.FixedDialog,
+                    Text = caption,
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+                Label textLabel = new Label() { Left = 50, Top = 20, Text = text, Width = 500 };
+                Button okButton = new Button() { Text = okTxt, Left = 250, Width = 100, Top = 70, DialogResult = DialogResult.OK };
+                Button cancelButton = new Button() { Text = noTxt, Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.Cancel };
+                okButton.Click += (sender, e) => { prompt.Close(); };
+                cancelButton.Click += (sender, e) => { prompt.Close(); };
+                prompt.Controls.Add(okButton);
+                prompt.Controls.Add(cancelButton);
+                prompt.Controls.Add(textLabel);
+                prompt.AcceptButton = okButton;
+                prompt.CancelButton = cancelButton;
+                //Shortcut if-then statement to check if user pressed ok
+                return prompt.ShowDialog() == DialogResult.OK ? true : false;
+            }
         }
 
-        public void ChangeTheme(int themeNum)
+        void ChangeTheme(int themeNum)
         {
             switch (themeNum)
             {
@@ -60,7 +97,7 @@ namespace TextEditorCSharp
 
                     rtb.ForeColor = Color.Black;
                     rtb.BackColor = Color.White;
-                    Form1.ActiveForm.BackColor = menuStrip1.BackColor;
+                    //Form1.ActiveForm.BackColor = menuStrip1.BackColor;
                     break;
                 //Dark theme
                 case 1:
@@ -72,7 +109,7 @@ namespace TextEditorCSharp
 
                     rtb.ForeColor = Color.WhiteSmoke;
                     rtb.BackColor = SystemColors.ControlDarkDark;
-                    Form1.ActiveForm.BackColor = menuStrip1.BackColor;
+                    //Form1.ActiveForm.BackColor = menuStrip1.BackColor;
                     break;
                 //Fire theme
                 case 2:
@@ -84,21 +121,27 @@ namespace TextEditorCSharp
 
                     rtb.ForeColor = Color.Yellow;
                     rtb.BackColor = Color.OrangeRed;
-                    Form1.ActiveForm.BackColor = menuStrip1.BackColor;
-                    break;                    
+                    //Form1.ActiveForm.BackColor = menuStrip1.BackColor;
+                    break;
             }
-            //If custom font color...
-            if (chosenColor != null)
+            //If custom font color...(ORIGINAL)
+            /*if (chosenColor != null)
             {//Ask if the user wants to keep it
-                string keepColor = Prompt.ShowDialog("Would you like to keep your custom font color?","Keep font color?").ToUpper();
+                string keepColor = Prompt.ShowDialog("Would you like to keep your custom font color?", "Keep font color?").ToUpper();
+
                 if (keepColor == "YES")
-                {
+                {//User wants to keep his custom font color
                     rtb.ForeColor = Color.FromName(chosenColor);
                 }
                 else
                 {//User doesn't want to keep custom font color, trash custom color reference
                     chosenColor = null;
                 }
+            }*/
+            //If custom font color...
+            if (chosenColor != null)
+            {//Keep the custom font color
+                rtb.ForeColor = Color.FromName(chosenColor);
             }
         }
 
@@ -106,6 +149,8 @@ namespace TextEditorCSharp
         {
             //Initialize form and set word wrap, and black font color, as checked by default
             InitializeComponent();
+            //trying to fix default forecolor bug
+            //rtb.ForeColor = Color.FromName("Black");
             wordWrapToolStripMenuItem.Checked = true;
             toolStripMenuItem2.Checked = true;
             //Shortcut Keys
@@ -119,54 +164,74 @@ namespace TextEditorCSharp
 
         private void tb_TextChanged(object sender, EventArgs e)
         {
-
-        }        
+            
+        }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //create new instance of class OpenFileDialog and set it's paramaters
-            OpenFileDialog openfile = new OpenFileDialog();
-            //Set filter to only allow users to open text files
-            openfile.Filter = "Text (*.txt)|*.txt";
-            if (System.Windows.Forms.DialogResult.OK == openfile.ShowDialog())
-            {
-                //if user clicks ok try to open file
-                try
+            if (changed == true & saved == false)//If user has made a change but not saved...
+            {//ask if they want to:
+                var confirm = Prompt.ShowOkCancel("You have made changes to the text, save your " +
+                    "file before opening a new one?", "Save Changes?", "Yes", "No");
+                switch (confirm)
                 {
-                    //set file path as string equal to file name of the instantiated class
-                    filePath = openfile.FileName;
-                    safeFilePath = openfile.SafeFileName;
-                    //read all text from file path as a single string
-                    //and write it to the text box
-                    rtb.Text = File.ReadAllText(filePath);
-                    //save the file data as an array (unused)
-                    fileAsArray = File.ReadAllLines(filePath);
-                    //show where we opened the file from
-                    MessageBox.Show("File Opened From: " + filePath);
-                    //Show file name on title bar
-                    //Also keep application name on title bar
-                    Form1.ActiveForm.Text = String.Format("({0}) {1}", safeFilePath, appName);
-                }
-                //if anything goes wrong, catch the error, prevent a crash
-                catch(Exception error)
-                {
-                    //tell the user the exact error message
-                    MessageBox.Show(error.Message);
+                    case true://Save changes and open new file
+                        saveToolStripMenuItem_Click(sender, e);
+                        openToolStripMenuItem_Click(sender, e);
+                        break;
+                    case false://Scrap changes and open new file
+                        MessageBox.Show("OK! Your funeral!");
+                        changed = false; saved = false;
+                        openToolStripMenuItem_Click(sender, e);
+                        break;
                 }
             }
+            else//Else just go ahead and open a file
+            {
+                //create new instance of class OpenFileDialog and set it's paramaters
+                OpenFileDialog openfile = new OpenFileDialog();
+                //Set filter to only allow users to open text files
+                openfile.Filter = "Text (*.txt)|*.txt";
+                if (System.Windows.Forms.DialogResult.OK == openfile.ShowDialog())//if user clicks ok try to open file
+                {                    
+                    try
+                    {
+                        //set file path as string equal to file name of the instantiated class
+                        filePath = openfile.FileName;
+                        safeFilePath = openfile.SafeFileName;
+                        //read all text from file path as a single string
+                        //and write it to the text box
+                        rtb.Text = File.ReadAllText(filePath);
+                        //save the file data as an array (unused)
+                        //fileAsArray = File.ReadAllLines(filePath);
+                        //show where we opened the file from
+                        MessageBox.Show("File Opened From: " + filePath);
+                        //Show file name on title bar
+                        //Also keep application name on title bar
+                        Form1.ActiveForm.Text = String.Format("({0}) {1}", safeFilePath, appName);
+                        changed = false; saved = false;
+                    }
+                    //if anything goes wrong, catch the error, prevent a crash
+                    catch (Exception error)
+                    {
+                        //tell the user the exact error message
+                        MessageBox.Show(error.Message);
+                    }
+                }
+            }
+            
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Only attempt if we know the path of the file
-            if (filePath != null)
+        {            
+            if (filePath != null)//Only attempt if we know the path of the file
             {
                 try
-                {
-                    //write text in text box to previously chosen file path
-                    File.WriteAllText(filePath, rtb.Text);
-                    //tell user where we wrote the file
-                    MessageBox.Show("File Written to: " + filePath);
+                {                   
+                    File.WriteAllText(filePath, rtb.Text);//write text in text box to previously chosen file path
+                    MessageBox.Show("File Written to: " + filePath);//tell user where we wrote the file
+                    Form1.ActiveForm.Text = String.Format("({0}) {1}", safeFilePath, appName);//Show file name in title bar
+                    changed = false; saved = true;
                 }
                 //attempt to guess extremely specific error exception
                 //tell user exact error
@@ -175,8 +240,7 @@ namespace TextEditorCSharp
                     MessageBox.Show(error.Message);
                 }
             }
-            //Else make them do save as function
-            else
+            else//Else make them do save as function
             {
                 MessageBox.Show("Where should I save this file?");
                 saveAsToolStripMenuItem_Click(sender, e);
@@ -198,6 +262,7 @@ namespace TextEditorCSharp
                     File.WriteAllText(filePath, rtb.Text);
                     MessageBox.Show("File Written to: " + filePath);
                     Form1.ActiveForm.Text = String.Format("({0}) {1}", safeFilePath, appName);
+                    changed = false; saved = true;
                     rtb.Focus();
                 }
                 //throw error message for every exception
@@ -217,7 +282,7 @@ namespace TextEditorCSharp
             {
                 //MessageBox.Show("Found at index " + findIndex);
                 rtb.Focus();
-                rtb.Select(findIndex, 0);
+                rtb.Select(findIndex, findWhat.Length);
             }
             else
             {
@@ -234,57 +299,19 @@ namespace TextEditorCSharp
 
         private void chooseInstanceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
+           /* try
             {
                 string replaceWhat = Prompt.ShowDialog("Replace what? (Case-Sensitive)", "Find & Replace");
                 string withWhat = Prompt.ShowDialog("With what? (Case-Sensitive)", "Find & Replace");
+                var grabtext = rtb.Text;
+                int[] indexArray;
                 //Check if the text contains what we're looking for before we do anything
-                if (rtb.Text.Contains(replaceWhat))
+                //fi.Clear;
+                if (grabtext.Contains(replaceWhat))
                 {
-                    int replaceIndex = rtb.Text.IndexOf(replaceWhat);
-                    bool stillReplacing = true;
-
-                    do
-                    {
-                        replaceIndex = rtb.Text.IndexOf(replaceWhat);
-                        //Only ask to replace if there are more instances to replace
-                        if (replaceIndex != -1)
-                        {
-                            //bring main window to front of screen and highlight word
-                            rtb.Focus();
-                            rtb.Select(replaceIndex, replaceWhat.Length);
-                            //Single second pause so we can show the user what they would be replacing
-                            System.Threading.Thread.Sleep(1000);
-                            string confirmation = Prompt.ShowDialog("Would you like to replace '" + replaceWhat + "' at index " + replaceIndex + " with '" + withWhat + "' ?", "Find & Replace");
-
-                            switch (confirmation.ToUpper())
-                            {
-                                case "YES":
-                                case "Y":
-                                case "OK":
-                                    stillReplacing = true;
-                                    //var aStringBuilder = new StringBuilder(rtb.Text);
-                                    rtb.Text = rtb.Text.Remove(replaceIndex, replaceWhat.Length);
-                                    rtb.Text = rtb.Text.Insert(replaceIndex, withWhat);
-                                    break;
-                                case "NO":
-                                case "N":
-                                    stillReplacing = false;
-                                    break;
-                                default:
-                                    MessageBox.Show("Unknown response!\n" +
-                                        "Try yes or no");
-                                    stillReplacing = true;
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show("You have replaced every instance of '" + replaceWhat + "' in the textbox with '" + withWhat + "' !");
-                            stillReplacing = false;
-                        }
-                    }
-                    while (stillReplacing == true);
+                    int foundIndex = grabtext.IndexOf(replaceWhat);
+                    fi.Add(index foundIndex)
+                    
                 }
                 else
                 {
@@ -300,7 +327,7 @@ namespace TextEditorCSharp
             catch (Exception error)
             {
                 MessageBox.Show(error.Message);
-            }
+            }*/
         }
 
         private void everyInstanceToolStripMenuItem_Click(object sender, EventArgs e)
@@ -325,7 +352,7 @@ namespace TextEditorCSharp
         private void wordWrapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //check if word wrap is checked
-            if(wordWrapToolStripMenuItem.Checked == true)
+            if (wordWrapToolStripMenuItem.Checked == true)
             {
                 //uncheck if previously checked and set word wrap off
                 wordWrapToolStripMenuItem.Checked = false;
@@ -337,7 +364,7 @@ namespace TextEditorCSharp
                 wordWrapToolStripMenuItem.Checked = true;
                 rtb.WordWrap = true;
             }
-        }      
+        }
 
         private void descriptionToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -353,6 +380,7 @@ namespace TextEditorCSharp
             //Ask for a font color
             string askColor = Prompt.ShowDialog("Pick a color:", "Change Font Color");
             //Only change font color if user provides a new one
+            //if (Color.FromName(askColor) != rtb.ForeColor)
             if (askColor != rtb.ForeColor.ToString())
             {
                 rtb.ForeColor = Color.FromName(askColor);
@@ -368,8 +396,9 @@ namespace TextEditorCSharp
         {
             //whenever you resize a form set the text box to match the width, and the height to
             //match the height of the form minus the height of the menustrip
-            rtb.Width = Form1.ActiveForm.Width - 16;
-            rtb.Height = Form1.ActiveForm.Height - menuStrip1.Height - 42;
+            //Removed code to use docking for efficiency
+            /*rtb.Width = Form1.ActiveForm.Width - 16;
+            rtb.Height = Form1.ActiveForm.Height - menuStrip1.Height - 42;*/
         }
 
         private void windowThemeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -384,11 +413,11 @@ namespace TextEditorCSharp
                 string fontSizeString = Prompt.ShowDialog("Enter a size:", "Font Size Selection");
                 fontSize = float.Parse(fontSizeString);
                 rtb.Font = new Font(rtb.Font.FontFamily, fontSize, rtb.Font.Style);
-            }            
-            catch(Exception error)
+            }
+            catch (Exception error)
             {
                 MessageBox.Show(error.Message);
-            }     
+            }
         }
 
         private void boldToolStripMenuItem_Click(object sender, EventArgs e)
@@ -416,14 +445,17 @@ namespace TextEditorCSharp
 
             if (fontDialog1.ShowDialog() != DialogResult.Cancel)
             {
+                //Get the font and style chosen in font dialog and assign to text box
                 rtb.Font = fontDialog1.Font;
                 //If not changing the color, don't set custom string
+
                 if (rtb.ForeColor != fontDialog1.Color)
                 {
-                    chosenColor = rtb.ForeColor.ToString();
+                    //Change the font color only if different
+                    rtb.ForeColor = fontDialog1.Color;
+                    //Set font color to string
+                    chosenColor = fontDialog1.Color.ToKnownColor().ToString();
                 }
-                //Change the color no matter what
-                rtb.ForeColor = fontDialog1.Color;
             }
         }
 
@@ -448,6 +480,15 @@ namespace TextEditorCSharp
             {
                 MessageBox.Show("HELLO");
             }*/
+        }
+
+        private void rtb_TextChanged(object sender, EventArgs e)
+        {
+            if (filePath != null)
+            {
+                Form1.ActiveForm.Text = String.Format("*({0}) {1}", safeFilePath, appName);
+                changed = true; saved = false;
+            }
         }
     }
 }

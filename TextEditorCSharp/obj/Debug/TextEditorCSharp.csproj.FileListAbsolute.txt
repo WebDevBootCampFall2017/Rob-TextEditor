@@ -8,3 +8,13 @@ C:\Users\Admin\Documents\Visual Studio 2017\Class Projects\TextEditorCSharp\Text
 C:\Users\Admin\Documents\Visual Studio 2017\Class Projects\TextEditorCSharp\TextEditorCSharp\obj\Debug\TextEditorCSharp.pdb
 C:\Users\Admin\Documents\Visual Studio 2017\Class Projects\TextEditorCSharp\TextEditorCSharp\obj\Debug\TextEditorCSharp.Form1.resources
 C:\Users\Admin\Documents\Visual Studio 2017\Class Projects\TextEditorCSharp\TextEditorCSharp\obj\Debug\TextEditorCSharp.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Documents\Visual Studio 2017\Class\Class Projects\TextEditorCSharp\TextEditorCSharp\bin\Debug\TextEditorCSharp.exe.config
+C:\Users\Admin\Documents\Visual Studio 2017\Class\Class Projects\TextEditorCSharp\TextEditorCSharp\bin\Debug\TextEditorCSharp.exe
+C:\Users\Admin\Documents\Visual Studio 2017\Class\Class Projects\TextEditorCSharp\TextEditorCSharp\bin\Debug\TextEditorCSharp.pdb
+C:\Users\Admin\Documents\Visual Studio 2017\Class\Class Projects\TextEditorCSharp\TextEditorCSharp\obj\Debug\TextEditorCSharp.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Documents\Visual Studio 2017\Class\Class Projects\TextEditorCSharp\TextEditorCSharp\obj\Debug\TextEditorCSharp.Form1.resources
+C:\Users\Admin\Documents\Visual Studio 2017\Class\Class Projects\TextEditorCSharp\TextEditorCSharp\obj\Debug\TextEditorCSharp.Properties.Resources.resources
+C:\Users\Admin\Documents\Visual Studio 2017\Class\Class Projects\TextEditorCSharp\TextEditorCSharp\obj\Debug\TextEditorCSharp.csproj.GenerateResource.Cache
+C:\Users\Admin\Documents\Visual Studio 2017\Class\Class Projects\TextEditorCSharp\TextEditorCSharp\obj\Debug\TextEditorCSharp.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Documents\Visual Studio 2017\Class\Class Projects\TextEditorCSharp\TextEditorCSharp\obj\Debug\TextEditorCSharp.exe
+C:\Users\Admin\Documents\Visual Studio 2017\Class\Class Projects\TextEditorCSharp\TextEditorCSharp\obj\Debug\TextEditorCSharp.pdb

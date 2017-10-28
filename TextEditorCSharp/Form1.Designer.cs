@@ -196,7 +196,7 @@
             this.chooseInstanceToolStripMenuItem});
             this.andReplaceToolStripMenuItem.Name = "andReplaceToolStripMenuItem";
             this.andReplaceToolStripMenuItem.ShortcutKeyDisplayString = "";
-            this.andReplaceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.andReplaceToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.andReplaceToolStripMenuItem.Text = "And Replace";
             // 
             // everyInstanceToolStripMenuItem
@@ -280,11 +280,15 @@
             // 
             // rtb
             // 
+            this.rtb.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rtb.Location = new System.Drawing.Point(0, 27);
             this.rtb.Name = "rtb";
             this.rtb.Size = new System.Drawing.Size(490, 234);
             this.rtb.TabIndex = 2;
             this.rtb.Text = "";
+            this.rtb.TextChanged += new System.EventHandler(this.rtb_TextChanged);
             // 
             // Form1
             // 
