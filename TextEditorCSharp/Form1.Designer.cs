@@ -185,6 +185,7 @@
             this.andReplaceToolStripMenuItem});
             this.findToolStripMenuItem.Name = "findToolStripMenuItem";
             this.findToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+F";
+            this.findToolStripMenuItem.ShowShortcutKeys = false;
             this.findToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.findToolStripMenuItem.Text = "Find";
             this.findToolStripMenuItem.Click += new System.EventHandler(this.findToolStripMenuItem_Click);
@@ -196,7 +197,7 @@
             this.chooseInstanceToolStripMenuItem});
             this.andReplaceToolStripMenuItem.Name = "andReplaceToolStripMenuItem";
             this.andReplaceToolStripMenuItem.ShortcutKeyDisplayString = "";
-            this.andReplaceToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.andReplaceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.andReplaceToolStripMenuItem.Text = "And Replace";
             // 
             // everyInstanceToolStripMenuItem
@@ -233,26 +234,25 @@
             this.windowThemeToolStripMenuItem.Name = "windowThemeToolStripMenuItem";
             this.windowThemeToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.windowThemeToolStripMenuItem.Text = "Window Theme";
-            this.windowThemeToolStripMenuItem.Click += new System.EventHandler(this.windowThemeToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(112, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem2.Text = "Default";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(112, 22);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem3.Text = "Dark";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(112, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem4.Text = "Fire";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
             // 
@@ -274,7 +274,7 @@
             // descriptionToolStripMenuItem
             // 
             this.descriptionToolStripMenuItem.Name = "descriptionToolStripMenuItem";
-            this.descriptionToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.descriptionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.descriptionToolStripMenuItem.Text = "Description";
             this.descriptionToolStripMenuItem.Click += new System.EventHandler(this.descriptionToolStripMenuItem_Click);
             // 
@@ -288,7 +288,6 @@
             this.rtb.Size = new System.Drawing.Size(490, 234);
             this.rtb.TabIndex = 2;
             this.rtb.Text = "";
-            this.rtb.TextChanged += new System.EventHandler(this.rtb_TextChanged);
             // 
             // Form1
             // 

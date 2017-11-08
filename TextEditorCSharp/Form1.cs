@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace TextEditorCSharp
 {
@@ -160,11 +159,6 @@ namespace TextEditorCSharp
             //findToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.F;
             everyInstanceToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.H;
             chooseInstanceToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Shift | Keys.H;
-        }
-
-        private void tb_TextChanged(object sender, EventArgs e)
-        {
-            
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -401,11 +395,6 @@ namespace TextEditorCSharp
             rtb.Height = Form1.ActiveForm.Height - menuStrip1.Height - 42;*/
         }
 
-        private void windowThemeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void sizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -480,15 +469,6 @@ namespace TextEditorCSharp
             {
                 MessageBox.Show("HELLO");
             }*/
-        }
-
-        private void rtb_TextChanged(object sender, EventArgs e)
-        {
-            if (filePath != null)
-            {
-                Form1.ActiveForm.Text = String.Format("*({0}) {1}", safeFilePath, appName);
-                changed = true; saved = false;
-            }
         }
     }
 }
